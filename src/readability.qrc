@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="JSDOMParser.js">../3rdparty/readability/JSDOMParser.js</file>
+        <file alias="Readability.js">../3rdparty/readability/Readability.js</file>
+    </qresource>
+</RCC>
