@@ -299,7 +299,7 @@ QString Text::textContent()
             m_text = "";
         } else {
             QScopedPointer<Element> body(new Element("body"));
-            DomBuilder builder(m_html);
+            DomBuilder builder(m_html, GUMBO_TAG_BODY);
             builder.buildIntoNode(body.data());
             m_text = body->textContent();
         }
@@ -442,8 +442,10 @@ QString Element::innerHTML()
 void Element::setInnerHTML(const QString &html)
 {
    clear();
-   DomBuilder builder(html, static_cast<GumboTag>(gumboTag()));
-   builder.buildIntoNode(this);
+   if (!html.isEmpty()) {
+       DomBuilder builder(html, static_cast<GumboTag>(gumboTag()));
+       builder.buildIntoNode(this);
+   }
 }
 
 QString Element::textContent()

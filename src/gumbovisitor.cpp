@@ -31,6 +31,10 @@ GumboVisitor::GumboVisitor(GumboOutput *gumbo, const QByteArray &utf8data)
     , m_root{m_gumbo->root}
     , m_node{m_root}
 {
+    if (m_data.length() == 0) {
+        qWarning("trying to parse an empty string");
+        return;
+    }
 }
 
 void GumboVisitor::walk()
