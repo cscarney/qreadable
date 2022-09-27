@@ -43,6 +43,13 @@ Document *DomBuilder::buildDocument(const QUrl &url)
     return d->document;
 }
 
+static QString getTagName(GumboStringPiece originalTag)
+{
+    gumbo_tag_from_original_text(&originalTag);
+    QString tagName = QString::fromUtf8(originalTag.data, originalTag.length);
+    return tagName.section(':', -1, -1);
+}
+
 void DomBuilder::visitElementOpen(GumboNode *node)
 {   
     d->currentText = nullptr;
@@ -50,7 +57,10 @@ void DomBuilder::visitElementOpen(GumboNode *node)
         return;
     }
     GumboElement &element = node->v.element;
-    auto *domElement = new Element(element.tag);
+    Element *domElement = element.tag==GUMBO_TAG_UNKNOWN ?
+                new Element(getTagName(element.original_tag)) :
+                new Element(element.tag);
+
     GumboVector attrs = element.attributes;
     for(unsigned int i=0; i<attrs.length; i++) {
         const GumboAttribute *attr = static_cast<GumboAttribute *>(attrs.data[i]);
@@ -76,20 +86,18 @@ void DomBuilder::visitElementOpen(GumboNode *node)
 void DomBuilder::visitText(GumboNode *node)
 {
     QString text = node->v.text.text;
-
-    if (Text *currentText = d->currentText) {
-        currentText->appendTextContent(text);
-        return;
+    GumboStringPiece rawSource = node->v.text.original_text;
+    auto source = QString::fromUtf8(rawSource.data, rawSource.length);
+    if (!d->currentText) {
+        d->currentText = new Text();
+        if (d->elementStack.isEmpty()) {
+            d->rootNode->appendChild(d->currentText);
+        } else {
+            Element *parent = d->elementStack.top();
+            parent->appendChild(d->currentText);
+        }
     }
-    Text *domText = new Text();
-    domText->setTextContent(text);
-
-    if (d->elementStack.isEmpty()) {
-        d->rootNode->appendChild(domText);
-    } else {
-        Element *parent = d->elementStack.top();
-        parent->appendChild(domText);
-    }
+    d->currentText->appendTextContent(text, source);
 }
 
 void DomBuilder::visitElementClose(GumboNode *node)

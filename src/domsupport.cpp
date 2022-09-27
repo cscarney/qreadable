@@ -70,19 +70,19 @@ static void walkNextElement(Element *&el) {
     }
 }
 
-
 QList<Element *> Node::getElementsByTagName(const QString &tag, int max_elems)
 {
     int n{0};
     if (m_children.isEmpty()) {
         return {};
     }
+    bool isGetAll = (tag=="*");
     QString tagUpper = tag.toUpper();
     GumboTag gumboTag = gumbo_tag_enum(tagUpper.toUtf8());
     QList<Element*> result;
     Element *candidate = m_children.first();
     while (candidate) {
-        if (candidate->gumboTag() == gumboTag) {
+        if (isGetAll || candidate->gumboTag() == gumboTag) {
             result.append(candidate);
             ++n;
             if (n>max_elems) {
@@ -211,6 +211,7 @@ Node *Node::replaceChild(Node *newNode, Node *oldNode)
     if (childIndex < 0) {
         return nullptr; // TODO should throw
     }
+    newNode->setParent(this);
     if (Node *oldParent = newNode->m_parentNode) {
         oldParent->removeChild(newNode);
     }
@@ -308,15 +309,19 @@ void Text::setTextContent(const QString &text)
     m_html.clear();
 }
 
-void Text::appendTextContent(const QString &text)
+void Text::appendTextContent(const QString &text, const QString &html)
 {
     m_text += text;
-    m_html.clear();
+    m_html += html;
 }
 
-void Text::serialize(QStringList &fragments, bool /* textOnly */)
+void Text::serialize(QStringList &fragments, bool textOnly)
 {
-    fragments << innerHTML();
+    if (textOnly) {
+        fragments << textContent();
+    } else {
+        fragments << innerHTML();
+    }
 }
 
 Document::Document(const QString& url)
@@ -408,7 +413,8 @@ void Element::serialize(QStringList &fragments, bool textOnly)
         serializeChildren(fragments, true);
         return;
     }
-    fragments << "<" + m_tagName;
+    QString name = localName();
+    fragments << "<" << name;
     for(auto *eachAttr : qAsConst(m_attributes)) {
         eachAttr->serialize(fragments);
     }
@@ -418,7 +424,7 @@ void Element::serialize(QStringList &fragments, bool textOnly)
     } else {
         fragments << ">";
         serializeChildren(fragments, textOnly);
-        fragments << "</"+m_tagName+">";
+        fragments << "</" << name << ">";
     }
 }
 
