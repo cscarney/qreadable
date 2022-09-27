@@ -20,3 +20,4 @@ include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} 3rdparty src
 
 add_subdirectory(3rdparty/gumbo)
 add_subdirectory(src)
+add_subdirectory(test)

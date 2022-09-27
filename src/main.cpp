@@ -10,6 +10,7 @@
 
 int main(int argc, char **argv)
 {
+    Q_INIT_RESOURCE(readability);
     QCoreApplication app(argc, argv);
 
     auto urlString = QCoreApplication::arguments().value(1);
@@ -33,9 +34,7 @@ int main(int argc, char **argv)
 
         // load readability
         JSHelpers::evalFile(engine, ":/Readability.js");
-        QJSValue options = engine.newObject();
-        options.setProperty("debug", true);
-        QJSValue readability = JSHelpers::callMemberConstructor(jsThis, "Readability", {jsDocument, options});
+        QJSValue readability = JSHelpers::callMemberConstructor(jsThis, "Readability", {jsDocument});
 
         // get result
         QJSValue parseResult = JSHelpers::callMember(readability, "parse");
