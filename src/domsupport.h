@@ -4,6 +4,7 @@
 #include <QUrl>
 #include <QVariant>
 
+class DomBuilder;
 namespace DomSupport {
 class Document;
 class Attribute;
@@ -134,12 +135,13 @@ public:
     void setInnerHTML(const QString &html) override;
     QString textContent() override;
     void setTextContent(const QString &text) override;
-    void appendTextContent(const QString &text);
     void serialize(QStringList &fragments, bool textOnly=false) override;
 
 private:
     QString m_html;
     QString m_text;
+    void appendTextContent(const QString &text, const QString &html);
+    friend class ::DomBuilder;
 };
 
 class Document : public Node {
@@ -161,7 +163,7 @@ public:
     Element *body();
     Element *head();
 
-    Q_INVOKABLE Element *getElementById(const QString &id);
+    Q_INVOKABLE DomSupport::Element *getElementById(const QString &id);
     Q_INVOKABLE DomSupport::Element *createElement(const QString &tag);
     Q_INVOKABLE DomSupport::Text *createTextNode(const QString &text);
 
