@@ -1,13 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2021 Connor Carney <hello@connorcarney.com>
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
  */
+#pragma once
 
-#ifndef GUMBOVISITOR_H
-#define GUMBOVISITOR_H
 #include "gumbo/gumbo.h"
 #include <QString>
 
+namespace QReadable {
 class GumboVisitor
 {
 public:
@@ -47,5 +47,4 @@ private:
     GumboNode *m_node;
     void moveNext();
 };
-
-#endif // GUMBOVISITOR_H
+}

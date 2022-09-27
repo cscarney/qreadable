@@ -1,5 +1,8 @@
-#ifndef DOMBUILDER_H
-#define DOMBUILDER_H
+/**
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 
 #include "gumbovisitor.h"
 #include "domsupport.h"
@@ -8,6 +11,7 @@ class QString;
 class QJSValue;
 class QUrl;
 
+namespace QReadable {
 /**
  * Builds a DOM document
  *
@@ -51,5 +55,4 @@ private:
     void visitText(GumboNode *node) override;
     void visitElementClose(GumboNode *node) override;
 };
-
-#endif // DOMBUILDER_H
+}

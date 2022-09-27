@@ -1,10 +1,16 @@
+/**
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 #include "dombuilder.h"
 #include <QDebug>
 #include <QJSValue>
 #include <QStack>
 #include <QUrl>
 #include "domsupport.h"
-using namespace DomSupport;
+using namespace QReadable;
+using namespace QReadable::DomSupport;
 
 struct DomBuilder::PrivData {
     Document *document{nullptr};

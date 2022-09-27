@@ -1,10 +1,14 @@
+/**
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
+ */
 #include "domsupport.h"
 #include <QQmlEngine>
 #include <gumbo/gumbo.h>
 #include <QPair>
 #include "dombuilder.h"
-
-using namespace DomSupport;
+using namespace QReadable;
+using namespace QReadable::DomSupport;
 
 void Node::clear()
 {

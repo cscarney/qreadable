@@ -1,10 +1,15 @@
-#ifndef DOMSUPPORT_H
-#define DOMSUPPORT_H
+/**
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 #include <QObject>
 #include <QUrl>
 #include <QVariant>
 
+namespace QReadable {
 class DomBuilder;
+
 namespace DomSupport {
 class Document;
 class Attribute;
@@ -47,45 +52,45 @@ public:
     };
     Q_ENUM(NodeType)
 
-    Q_PROPERTY(QList<DomSupport::Attribute*> attributes MEMBER m_attributes)
-    Q_PROPERTY(QList<DomSupport::Node*> childNodes MEMBER m_childNodes)
-    Q_PROPERTY(QList<DomSupport::Element*> children MEMBER m_children)
+    Q_PROPERTY(QList<QReadable::DomSupport::Attribute*> attributes MEMBER m_attributes)
+    Q_PROPERTY(QList<QReadable::DomSupport::Node*> childNodes MEMBER m_childNodes)
+    Q_PROPERTY(QList<QReadable::DomSupport::Element*> children MEMBER m_children)
     Q_PROPERTY(QString localName MEMBER m_localName)
-    Q_PROPERTY(DomSupport::Node *parentNode MEMBER m_parentNode)
-    Q_PROPERTY(DomSupport::Node *previousSibling MEMBER m_previousSibling)
-    Q_PROPERTY(DomSupport::Node *nextSibling MEMBER m_nextSibling)
-    Q_PROPERTY(DomSupport::Node *firstChild READ firstChild)
-    Q_PROPERTY(DomSupport::Element *firstElementChild READ firstElementChild)
-    Q_PROPERTY(DomSupport::Node *lastChild READ lastChild)
-    Q_PROPERTY(DomSupport::Element *lastElementChild READ lastElementChild)
+    Q_PROPERTY(QReadable::DomSupport::Node *parentNode MEMBER m_parentNode)
+    Q_PROPERTY(QReadable::DomSupport::Node *previousSibling MEMBER m_previousSibling)
+    Q_PROPERTY(QReadable::DomSupport::Node *nextSibling MEMBER m_nextSibling)
+    Q_PROPERTY(QReadable::DomSupport::Node *firstChild READ firstChild)
+    Q_PROPERTY(QReadable::DomSupport::Element *firstElementChild READ firstElementChild)
+    Q_PROPERTY(QReadable::DomSupport::Node *lastChild READ lastChild)
+    Q_PROPERTY(QReadable::DomSupport::Element *lastElementChild READ lastElementChild)
     Q_PROPERTY(QString nodeName READ nodeName)
-    Q_PROPERTY(DomSupport::Node::NodeType nodeType READ nodeType)
-    Q_PROPERTY(DomSupport::Document *ownerDocument READ ownerDocument)
+    Q_PROPERTY(QReadable::DomSupport::Node::NodeType nodeType READ nodeType)
+    Q_PROPERTY(QReadable::DomSupport::Document *ownerDocument READ ownerDocument)
 
     virtual NodeType nodeType() { return UNKNOWN_NODE; }
     virtual QString nodeName() { return QString(); }
     virtual void serialize(QStringList &fragments, bool textOnly=false){}
     void clear();
-    DomSupport::Node *firstChild() const;
-    DomSupport::Element *firstElementChild() const;
-    DomSupport::Node *lastChild() const;
-    DomSupport::Element *lastElementChild() const;
-    DomSupport::Document *ownerDocument() const;
+    QReadable::DomSupport::Node *firstChild() const;
+    QReadable::DomSupport::Element *firstElementChild() const;
+    QReadable::DomSupport::Node *lastChild() const;
+    QReadable::DomSupport::Element *lastElementChild() const;
+    QReadable::DomSupport::Document *ownerDocument() const;
 
-    QList<DomSupport::Element*> getElementsByTagName(const QString &tag, int max_elems);
-    Q_INVOKABLE QList<DomSupport::Element*> getElementsByTagName(const QString &tag);
-    Q_INVOKABLE void appendChild(DomSupport::Node *child);
-    Q_INVOKABLE DomSupport::Node *removeChild(DomSupport::Node *child);
-    Q_INVOKABLE DomSupport::Node *replaceChild(DomSupport::Node *newNode, DomSupport::Node *oldNode);
+    QList<QReadable::DomSupport::Element*> getElementsByTagName(const QString &tag, int max_elems);
+    Q_INVOKABLE QList<QReadable::DomSupport::Element*> getElementsByTagName(const QString &tag);
+    Q_INVOKABLE void appendChild(QReadable::DomSupport::Node *child);
+    Q_INVOKABLE QReadable::DomSupport::Node *removeChild(QReadable::DomSupport::Node *child);
+    Q_INVOKABLE QReadable::DomSupport::Node *replaceChild(QReadable::DomSupport::Node *newNode, QReadable::DomSupport::Node *oldNode);
 
-    QList<DomSupport::Attribute *> m_attributes;
-    QList<DomSupport::Node *> m_childNodes;
-    QList<DomSupport::Element *> m_children;
+    QList<QReadable::DomSupport::Attribute *> m_attributes;
+    QList<QReadable::DomSupport::Node *> m_childNodes;
+    QList<QReadable::DomSupport::Element *> m_children;
     QString m_localName;
     QString m_nodeName;
-    DomSupport::Node *m_parentNode{nullptr};
-    DomSupport::Node *m_previousSibling{nullptr};
-    DomSupport::Node *m_nextSibling{nullptr};
+    QReadable::DomSupport::Node *m_parentNode{nullptr};
+    QReadable::DomSupport::Node *m_previousSibling{nullptr};
+    QReadable::DomSupport::Node *m_nextSibling{nullptr};
 };
 
 class Attribute : public Node {
@@ -141,7 +146,7 @@ private:
     QString m_html;
     QString m_text;
     void appendTextContent(const QString &text, const QString &html);
-    friend class ::DomBuilder;
+    friend class QReadable::DomBuilder;
 };
 
 class Document : public Node {
@@ -149,10 +154,10 @@ class Document : public Node {
 public:
     Q_PROPERTY(QString documentURI MEMBER m_url)
     Q_PROPERTY(QUrl baseURI MEMBER m_baseURI)
-    Q_PROPERTY(DomSupport::Element *documentElement READ documentElement)
+    Q_PROPERTY(QReadable::DomSupport::Element *documentElement READ documentElement)
     Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(DomSupport::Element *body READ body);
-    Q_PROPERTY(DomSupport::Element *head READ head);
+    Q_PROPERTY(QReadable::DomSupport::Element *body READ body);
+    Q_PROPERTY(QReadable::DomSupport::Element *head READ head);
 
     explicit Document(const QString& url);
     NodeType nodeType() override { return DOCUMENT_NODE; }
@@ -163,9 +168,9 @@ public:
     Element *body();
     Element *head();
 
-    Q_INVOKABLE DomSupport::Element *getElementById(const QString &id);
-    Q_INVOKABLE DomSupport::Element *createElement(const QString &tag);
-    Q_INVOKABLE DomSupport::Text *createTextNode(const QString &text);
+    Q_INVOKABLE QReadable::DomSupport::Element *getElementById(const QString &id);
+    Q_INVOKABLE QReadable::DomSupport::Element *createElement(const QString &tag);
+    Q_INVOKABLE QReadable::DomSupport::Text *createTextNode(const QString &text);
 
     QString m_url;
     QUrl m_baseURI;
@@ -240,6 +245,5 @@ public:
 private:
     Element *m_element;
 };
-}
-
-#endif
+} /*DomSupport*/
+} /*QReadable*/

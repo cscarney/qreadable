@@ -1,12 +1,15 @@
-#ifndef JSHELPERS_H
-#define JSHELPERS_H
+/**
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#pragma once
 #include <QFile>
 #include <QDebug>
 #include <QJSEngine>
 #include <QJSValue>
 #include <QJSValueIterator>
 
-namespace JSHelpers {
+namespace QReadable::JSHelpers {
 
 inline void logError(const QJSValue &error)
 {
@@ -79,5 +82,3 @@ inline QJSValue evalFile(QJSEngine &engine, const QString &path)
 }
 
 }
-
-#endif // JSHELPERS_H

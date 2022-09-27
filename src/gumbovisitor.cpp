@@ -1,9 +1,9 @@
 /**
- * SPDX-FileCopyrightText: 2021 Connor Carney <hello@connorcarney.com>
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * SPDX-FileCopyrightText: 2022 Connor Carney <hello@connorcarney.com>
+ * SPDX-License-Identifier: Apache-2.0
  */
-
 #include "gumbovisitor.h"
+using namespace QReadable;
 
 GumboVisitor::GumboVisitor(const QString &input)
     : GumboVisitor(input.toUtf8())

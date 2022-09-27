@@ -8,6 +8,8 @@
 // raw string literals confuse moc, so put them in a header file
 #include "test/tst_domsupport_jscode.h"
 
+using namespace QReadable;
+
 class TestSupport : public QObject {
     Q_OBJECT
     QPointer<QJSEngine> m_engine;
