@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 
     QNetworkAccessManager nam;
     QNetworkRequest req(url);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     QNetworkReply *reply = nam.get(req);
     QObject::connect(reply, &QNetworkReply::finished, &app, [reply]{
         QByteArray data = reply->readAll();
