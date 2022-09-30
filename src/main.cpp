@@ -25,6 +25,10 @@ int main(int argc, char **argv)
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     QNetworkReply *reply = nam.get(req);
     QObject::connect(reply, &QNetworkReply::finished, &app, [reply]{
+        if (reply->error()!=QNetworkReply::NoError) {
+            qWarning() << "Failed to load content: " << reply->errorString();
+            QCoreApplication::exit(1);
+        }
         QByteArray data = reply->readAll();
         QString text(data);
         Readable readable;
