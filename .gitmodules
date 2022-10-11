@@ -1,3 +1,0 @@
-[submodule "3rdparty/readability"]
-	path = 3rdparty/readability
-	url = https://github.com/mozilla/readability
